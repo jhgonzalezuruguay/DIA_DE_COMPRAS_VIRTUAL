@@ -9,9 +9,11 @@ def show_catalog():
         if not products:
             st.info("No hay productos aprobados.")
             return
-        selected = []
         for prod in products:
-            st.write(f"**{prod.name}** - ${prod.price}")
+            # Buscar el comercio por su id
+            comercio = session.query(User).filter(User.id == prod.commerce_id).first()
+            comercio_nombre = comercio.username if comercio else "Desconocido"
+            st.write(f"**{prod.name}** - ${prod.price} | Comercio: {comercio_nombre}")
             if st.button(f"Agregar '{prod.name}' al carrito", key=prod.id):
                 if "cart" not in st.session_state:
                     st.session_state["cart"] = []
@@ -22,8 +24,10 @@ def show_catalog():
             cart_product_ids = st.session_state["cart"]
             for pid in cart_product_ids:
                 prod = session.query(Product).filter(Product.id == pid).first()
+                comercio = session.query(User).filter(User.id == prod.commerce_id).first()
+                comercio_nombre = comercio.username if comercio else "Desconocido"
                 if prod:
-                    st.write(f"{prod.name} - ${prod.price}")
+                    st.write(f"{prod.name} - ${prod.price} | Comercio: {comercio_nombre}")
             if st.button("Generar Pedido"):
                 if "username" in st.session_state:
                     user = session.query(User).filter(User.username == st.session_state["username"]).first()
@@ -34,4 +38,3 @@ def show_catalog():
                     st.session_state["cart"] = []
                 else:
                     st.error("Debes iniciar sesión para generar pedidos.")
-
