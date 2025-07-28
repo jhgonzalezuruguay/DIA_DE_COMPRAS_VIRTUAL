@@ -2,3 +2,4 @@ streamlit
 sqlmodel
 passlib
 python-dotenv
+bcrypt
