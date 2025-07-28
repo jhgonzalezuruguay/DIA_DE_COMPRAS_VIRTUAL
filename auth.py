@@ -21,7 +21,7 @@ def show_register():
     st.subheader("Registro")
     username = st.text_input("Usuario nuevo")
     password = st.text_input("Contraseña nueva", type="password")
-    role = st.selectbox("Rol", ["comprador", "comercio"])
+    role = st.selectbox("Rol", ["comprador", "comercio", "admin"])  # <-- ahora incluye "admin"
     if st.button("Registrar"):
         with get_session() as session:
             exists = session.query(User).filter(User.username == username).first()
@@ -33,8 +33,3 @@ def show_register():
                 session.add(user)
                 session.commit()
                 st.success("Usuario registrado correctamente")
-
-
-
-
-
