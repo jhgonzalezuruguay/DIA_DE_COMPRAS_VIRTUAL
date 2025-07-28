@@ -16,4 +16,5 @@ class Product(SQLModel, table=True):
 class Order(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     user_id: int
-    products: str  # lista serializada de ids
+    products: str  # comma-separated product ids
+
